@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable
@@ -94,5 +95,8 @@ def generate_summary(generator: Generator, source: str, *, max_tokens: int = 180
         messages, add_generation_prompt=True, tokenize=False
     )
     sampler = generator.make_sampler(temp=temperature)
-    return generator.generate(generator.model, generator.tokenizer, prompt=prompt,
-                              max_tokens=max_tokens, sampler=sampler, verbose=False).strip()
+    output = generator.generate(generator.model, generator.tokenizer, prompt=prompt,
+                                max_tokens=max_tokens, sampler=sampler, verbose=False)
+    output = re.sub(r"<think>.*?</think>", "", output, flags=re.DOTALL | re.IGNORECASE)
+    output = re.sub(r"</?tool_call>", "", output, flags=re.IGNORECASE)
+    return output.strip()

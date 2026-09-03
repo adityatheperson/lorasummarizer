@@ -105,6 +105,16 @@ python -m pytest -q
 
 Unit tests cover data preparation, prompts, metrics, reports, wrapper commands, and CLI validation without downloading a model. Model download, generation, and training are separate smoke tests because they require Apple Silicon, several gigabytes of disk, and more time.
 
+## Local test interface
+
+Start the private, local-only comparison page:
+
+```bash
+python scripts/ui.py
+```
+
+Open `http://127.0.0.1:8000`, paste an English passage, and click **Compare summaries**. The page runs the untouched base model and `adapters/best` with identical settings, then displays both summaries and their generation times. Your text stays on this Mac. Stop the server with Control-C.
+
 ## Current mlx-lm interface
 
 This MVP uses `mlx-lm[train]` 0.29.1 because it is the newest release that installs with the Apple-provided Python 3.9 and available MLX wheels on this test Mac. Newer `mlx-lm` releases require Python 3.10 or later. The installed 0.29.1 package supports the module command:

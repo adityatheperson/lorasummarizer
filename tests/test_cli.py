@@ -32,6 +32,14 @@ def test_generate_summary_uses_shared_chat_prompt():
                                              "verbose": False})]
 
 
+def test_generate_summary_removes_empty_qwen_control_markers():
+    tokenizer = FakeTokenizer()
+    raw = "<think>\n\n</think>\n\n<tool_call>\n\nUseful summary"
+    generator = Generator(object(), tokenizer, lambda *args, **kwargs: raw,
+                          lambda **kwargs: None)
+    assert generate_summary(generator, "Source") == "Useful summary"
+
+
 def test_run_dataset_writes_required_fields(tmp_path):
     test_file = tmp_path / "test.jsonl"
     test_file.write_text(json.dumps(chat_record("Source", "Reference")) + "\n", encoding="utf-8")
