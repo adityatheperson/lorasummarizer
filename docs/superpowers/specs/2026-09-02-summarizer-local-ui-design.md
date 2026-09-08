@@ -18,7 +18,7 @@ The frontend is a small static page served by the same Python process, avoiding 
 
 ## Data flow
 
-The browser sends `{ "text": "..." }` to `POST /api/compare`. The server validates that `text` is a non-empty string within a documented size limit, generates the base summary, then generates the adapter summary with identical token and temperature settings. It returns:
+The browser sends `{ "text": "..." }` to `POST /api/compare`. The server validates that `text` is a non-empty string no longer than 20,000 characters, generates the base summary, then generates the adapter summary with identical token and temperature settings. It returns:
 
 ```json
 {
